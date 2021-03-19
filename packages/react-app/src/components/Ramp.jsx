@@ -38,7 +38,7 @@ export default function Ramp(props) {
           <Button
             style={{color:props.networks[n].color}}
             type={type}
-            size="large"
+            size="small"
             shape="round"
             onClick={() => {
               window.open(props.networks[n].faucet);
@@ -54,7 +54,7 @@ export default function Ramp(props) {
   return (
     <div>
       <Button
-        size="large"
+        size="small"
         shape="round"
         onClick={() => {
           setModalUp("up");
@@ -82,7 +82,7 @@ export default function Ramp(props) {
         <p>
           <Button
             type={type}
-            size="large"
+            size="small"
             shape="round"
             onClick={() => {
               window.open("https://pay.sendwyre.com/purchase?destCurrency=ETH&sourceAmount=25&dest=" + props.address);
@@ -98,7 +98,7 @@ export default function Ramp(props) {
           {" "}
           <Button
             type={type}
-            size="large"
+            size="small"
             shape="round"
             onClick={() => {
               new RampInstantSDK({
@@ -122,7 +122,7 @@ export default function Ramp(props) {
         <p>
           <Button
             type={type}
-            size="large"
+            size="small"
             shape="round"
             onClick={() => {
               window.open("https://www.coinbase.com/buy-ethereum");
