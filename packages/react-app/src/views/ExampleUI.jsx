@@ -3,12 +3,12 @@
 import React, { useState } from "react";
 import { Button, List, Divider, Input, Card, DatePicker, Slider, Switch, Progress, Spin } from "antd";
 import { SyncOutlined } from '@ant-design/icons';
-import { Address, Balance } from "../components";
+import { Address, Balance, Url } from "../components";
 import { parseEther, formatEther } from "@ethersproject/units";
+import { URLForm } from "../components/Url";
 
 export default function ExampleUI({purpose, setPurposeEvents, address, mainnetProvider, userProvider, localProvider, yourLocalBalance, price, tx, readContracts, writeContracts }) {
 
-  const [newPurpose, setNewPurpose] = useState("loading...");
 
   return (
     <div>
@@ -16,20 +16,24 @@ export default function ExampleUI({purpose, setPurposeEvents, address, mainnetPr
         ⚙️ Here is an example UI that displays and sets the purpose in your smart contract:
       */}
       <div style={{border:"1px solid #cccccc", padding:16, width:400, margin:"auto",marginTop:64}}>
-        <h2>Example UI:</h2>
+        <h2>Minting:</h2>
 
-        <h4>purpose: {purpose}</h4>
+        <h4>purpose: Mint an NFT for a tik-tok of your choice</h4>
 
         <Divider/>
 
         <div style={{margin:8}}>
-          <Input onChange={(e)=>{setNewPurpose(e.target.value)}} />
+          <Input type="text" name='Tik-Tok URL' />
           <Button onClick={()=>{
-            console.log("newPurpose",newPurpose)
-            /* look how you call setPurpose on your contract: */
-            tx( writeContracts.YourContract.setPurpose(newPurpose) )
-          }}>Set Purpose</Button>
+            /*
+              ⚙️ Kadin will have to add the hook function that displays the embed on button click
+            */
+          }}>Display Tik-Tok</Button>
         </div>
+
+        
+
+       
 
 
         <Divider />
@@ -63,34 +67,8 @@ export default function ExampleUI({purpose, setPurposeEvents, address, mainnetPr
           price={price}
         />
 
-        <Divider/>
+      
 
-        <div>🐳  Example Whale Balance:</div>
-
-        <Balance
-          balance={parseEther("1000")}
-          provider={localProvider}
-          price={price}
-        />
-
-        <Divider/>
-
-
-        {  /* use formatEther to display a BigNumber: */ }
-        <h2>Your Balance: {yourLocalBalance?formatEther(yourLocalBalance):"..."}</h2>
-
-        <Divider/>
-
-
-
-        Your Contract Address:
-        <Address
-            address={readContracts?readContracts.YourContract.address:readContracts}
-            ensProvider={mainnetProvider}
-            fontSize={16}
-        />
-
-        <Divider />
 
         <div style={{margin:8}}>
           <Button onClick={()=>{
