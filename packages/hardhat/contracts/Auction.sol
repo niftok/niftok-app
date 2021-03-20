@@ -17,6 +17,7 @@ contract Auction {
     mapping (string => uint256) internal uriToId;
     mapping (string => Bid) internal maxBid;
     mapping (string => uint) internal auctionEnd;
+    mapping (string => bool) internal minted;
 
     Niftok nft;
 
@@ -25,8 +26,12 @@ contract Auction {
     }
 
     function endAuction(string memory tokenURI) public {
+        require(!minted[tokenURI], "Already minted");
         require(auctionEnd[tokenURI] <= block.timestamp, "Auction has not ended yet");
+        minted[tokenURI] == true;
         nft.mintNft(maxBid[tokenURI].bidder, tokenURI);
+
+        emit AuctionEnd(tokenURI, maxBid[tokenURI].bidder, maxBid[tokenURI].bidPrice);
     }
 
     function bid(string memory tokenURI, uint256 bidPrice) public payable {
@@ -44,6 +49,8 @@ contract Auction {
             maxBid[tokenURI] = newBid;
             msg.sender.transfer(bidPrice);
         }
+
+        emit BidMade(tokenURI, msg.sender, bidPrice);
     }
 
     function auctionEndTime(string memory tokenURI) public view returns (uint) {
@@ -53,4 +60,11 @@ contract Auction {
     function currentBid(string memory tokenURI) public view returns (address, uint256) {
         return (maxBid[tokenURI].bidder, maxBid[tokenURI].bidPrice);
     }
+
+    function isMinted(string memory tokenURI) public view returns (bool) {
+        return minted[tokenURI];
+    }
+
+    event BidMade(string indexed _tokenURI, address indexed _bidder, uint256 _bidPrice);
+    event AuctionEnd(string indexed _tokenURI, address indexed _winner, uint256 _winPrice);
 }
