@@ -2,14 +2,15 @@ pragma solidity ^0.6.6;
 
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
+import "./Niftok.sol";
 
 
-contract Auction is {
+contract Auction {
+
+    using SafeMath for uint256;
 
     struct Bid {
-        address bidder;
+        address payable bidder;
         uint256 bidPrice;
     }
 
@@ -23,34 +24,33 @@ contract Auction is {
         Niftok nft = Niftok(nft_addr);
     }
 
-    function endAuction(string tokenURI) external {
-        require(auctionEnd[token]);
+    function endAuction(string memory tokenURI) public {
+        require(auctionEnd[tokenURI] <= block.timestamp, "Auction has not ended yet");
         nft.mintNft(maxBid[tokenURI].bidder, tokenURI);
-
     }
 
-    function bid(string tokenURI, uint256 bidPrice) public payable returns () {
-        if (maxBid[tokenURI] == 0) { // No one has bid before
+    function bid(string memory tokenURI, uint256 bidPrice) public payable {
+        if (maxBid[tokenURI].bidPrice == 0) { // No one has bid before
             require(bidPrice > 1 finney, "Below minimum bid");
             auctionEnd[tokenURI] = block.timestamp + 1 weeks;
         } else {
             require(block.timestamp < auctionEnd[tokenURI], "Auction has ended");
-            require(bidPrice > div(mul(maxBid[tokenURI], 11), 10) , "Require 10% bid increase");
+            require(bidPrice > maxBid[tokenURI].bidPrice.mul(11).div(10), "Require 10% bid increase");
 
             // Return Ether back to previous high bidder
             maxBid[tokenURI].bidder.transfer(maxBid[tokenURI].bidPrice);
 
-            Bid newBid = Bid(msg.sender, bidPrice);
+            Bid memory newBid = Bid(msg.sender, bidPrice);
             maxBid[tokenURI] = newBid;
             msg.sender.transfer(bidPrice);
         }
     }
 
-    function auctionEndTime(string tokenURI) public view returns (uint) {
+    function auctionEndTime(string memory tokenURI) public view returns (uint) {
         return auctionEnd[tokenURI];
     }
 
-    function currentBid(string tokenURI) public view returns (address, uint256) {
+    function currentBid(string memory tokenURI) public view returns (address, uint256) {
         return (maxBid[tokenURI].bidder, maxBid[tokenURI].bidPrice);
     }
 }
