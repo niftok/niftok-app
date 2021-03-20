@@ -9,7 +9,6 @@ import WalletConnectProvider from "@walletconnect/web3-provider";
 import { useUserAddress } from "eth-hooks";
 import { useExchangePrice, useGasPrice, useUserProvider, useContractLoader, useContractReader, useEventListener, useBalance, useExternalContractLoader } from "./hooks";
 import { Header, Account, Faucet, Ramp, Contract, GasGauge, ThemeSwitch } from "./components";
-import { TikTok } from 'react-tiktok';
 import { Transactor } from "./helpers";
 import { formatEther, parseEther } from "@ethersproject/units";
 //import Hints from "./Hints";
@@ -339,9 +338,6 @@ function App(props) {
                Support
              </Button>
           </Col>
-        </Row>
-        <Row align="middle" >
-          return <TikTok url='https://www.tiktok.com/@scout2015/video/6718335390845095173' />;
         </Row>
 
         <Row align="middle" gutter={[4, 4]}>

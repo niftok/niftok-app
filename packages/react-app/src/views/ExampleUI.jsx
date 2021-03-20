@@ -1,16 +1,23 @@
 /* eslint-disable jsx-a11y/accessible-emoji */
 
 import React, { useState } from "react";
-import { Button, List, Divider, Input, Card, DatePicker, Slider, Switch, Progress, Spin } from "antd";
+import { Row, Button, List, Divider, Input, Card, DatePicker, Slider, Switch, Progress, Spin } from "antd";
 import { SyncOutlined } from '@ant-design/icons';
-import { Address, Balance, Url, TikTok } from "../components";
+import { Address, Balance, Url } from "../components";
 import { parseEther, formatEther } from "@ethersproject/units";
+import { TikTok } from 'react-tiktok';
+
 
 
 export default function ExampleUI({ purpose, setPurposeEvents, address, mainnetProvider, userProvider, localProvider, yourLocalBalance, price, tx, readContracts, writeContracts }) {
 
+  
+  const [ tiktokURL, setTiktokURL ] = useState("")
+
+  let tiktokVideos = []
 
   return (
+
     <div>
       {/*
         ⚙️ Here is an example UI that displays and sets the purpose in your smart contract:
@@ -23,18 +30,24 @@ export default function ExampleUI({ purpose, setPurposeEvents, address, mainnetP
         <Divider />
 
         <div style={{ margin: 8 }}>
-          <Input type="text" name='Tik-Tok URL' />
+          <Input type="text" name='Tik-Tok URL' value={tiktokURL} 
+            onChange={(asdf)=>{
+              setTiktokURL(asdf.target.value)
+              console.log(tiktokURL)
+            }
+          }/>
           <Button onClick={() => {
-            /*
-              ⚙️ Kadin will have to add the hook function that displays the embed on button click
-            */
-            console.log('filler')
+            console.log("FROM ONCLICK", tiktokURL)
+            tiktokVideos.push(
+              <Row align="middle" gutter={4}>
+                <TikTok url='https://www.tiktok.com/@scout2015/video/6718335390845095173' />
+              </Row>
+            )
           }}>Display Tik-Tok</Button>
         </div>
-
-
+        
       </div>
-
+        {tiktokVideos}
       <div>
 
       </div>
